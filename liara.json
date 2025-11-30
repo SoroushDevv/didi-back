@@ -1,5 +1,8 @@
 {
   "platform": "node",
   "port": 3000,
-  "app": "didikalashop-back"
+  "app": "didikalashop-back",
+  "install": "npm install",       
+  "build": "npm run build",        
+  "start": "npm run server"   
 }
