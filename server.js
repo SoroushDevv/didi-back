@@ -48,10 +48,11 @@ app.set("io", io);
 
 // Middlewares
 app.use(cors({
-  origin: "*",
+  origin: "https://devserver-main--shimmering-pastelito-2da423.netlify.app",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 app.use(express.json());
 
 // Request logging middleware
