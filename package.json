@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "lint": "eslint server --ext .js,.jsx",
-    "format": "prettier --write \"**/*.{js,json}\""
+    "lint": "eslint server --ext .js,.jsx"
   },
   "author": "",
   "license": "ISC",
