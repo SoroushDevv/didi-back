@@ -25,7 +25,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://didikalashop-frontend.vercel.app/',
+      'https://didikalashop-frontend.vercel.app',
       "http://localhost:3000",
       "http://localhost:8000",
     ],
@@ -48,7 +48,7 @@ app.set("io", io);
 
 // Middlewares
 app.use(cors({
-  origin: "https://didikalashop-frontend.vercel.app/",
+  origin: "https://didikalashop-frontend.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
