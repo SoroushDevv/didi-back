@@ -25,7 +25,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://didikalashop-frontend.vercel.app',
+      "https://didikalashop-frontend-cdurw50h4-soroushs-projects-56e6ed40.vercel.app",
       "http://localhost:3000",
       "http://localhost:8000",
     ],
