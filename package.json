@@ -2,12 +2,12 @@
   "name": "Didi Kala Shop Cms",
   "version": "1.0.0",
   "description": "Backend for Didi Kala Shop",
-  "main": "server/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
     "lint": "eslint server --ext .js,.jsx",
-    "format": "prettier --write \"server/**/*.{js,json}\""
+    "format": "prettier --write \"**/*.{js,json}\""
   },
   "author": "",
   "license": "ISC",
