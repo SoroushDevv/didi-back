@@ -48,7 +48,7 @@ app.set("io", io);
 
 // Middlewares
 app.use(cors({
-  origin: "https://didikalashop-frontend.vercel.app",
+  origin: 'https://didikalashop-frontend-cdurw50h4-soroushs-projects-56e6ed40.vercel.app',
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
