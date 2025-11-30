@@ -26,6 +26,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "https://didikalashop-frontend-cdurw50h4-soroushs-projects-56e6ed40.vercel.app",
+      "https://didikalashop-frontend.vercel.app",
       "http://localhost:3000",
       "http://localhost:8000",
     ],
@@ -48,7 +49,10 @@ app.set("io", io);
 
 // Middlewares
 app.use(cors({
-  origin: 'https://didikalashop-frontend-cdurw50h4-soroushs-projects-56e6ed40.vercel.app',
+  origin: [
+    'https://didikalashop-frontend-cdurw50h4-soroushs-projects-56e6ed40.vercel.app',
+    "https://didikalashop-frontend.vercel.app",
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
