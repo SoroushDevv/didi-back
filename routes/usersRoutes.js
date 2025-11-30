@@ -21,30 +21,29 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-// 📌 User registration
 usersRouter.post("/register", async (req, res) => {
   const { username, password, phone, email, firstname, lastname, city, address, role } = req.body;
 
   if (!username || !password || !phone || !email)
-    return res.status(400).json({ message: "Username, password, phone, and email are required" });
+    return res.status(400).json({ message: "username, password, phone, and email are required" });
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return res.status(400).json({ message: "Invalid email format" });
 
   try {
     const [existingUsers] = await pool.query(
-      "SELECT * FROM Users WHERE username = ? OR email = ?",
+      "SELECT * FROM users WHERE username = ? OR email = ?",
       [username.trim(), email.trim()]
     );
     if (existingUsers.length > 0)
-      return res.status(400).json({ message: "Username or email already exists" });
+      return res.status(400).json({ message: "username or email already exists" });
 
     const hashedPassword = await bcrypt.hash(password.trim(), 10);
 
     const token = jwt.sign({ username: username.trim() }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
     await pool.query(
-      `INSERT INTO Users (firstname, lastname, username, password, phone, city, email, address, score, buy, token, role)
+      `INSERT INTO users (firstname, lastname, username, password, phone, city, email, address, score, buy, token, role)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ? )`,
       [
         firstname?.trim() || null,
@@ -60,7 +59,7 @@ usersRouter.post("/register", async (req, res) => {
       ]
     );
 
-    res.status(201).json({ message: "User registered successfully", token });
+    res.status(201).json({ message: "user registered successfully", token });
   } catch (err) {
     console.error("DB error:", err);
     res.status(500).json({ message: "Database error", details: err.message });
@@ -71,7 +70,7 @@ usersRouter.post("/register", async (req, res) => {
 usersRouter.get("/", async (req, res) => {
   try {
     const [users] = await pool.query(
-      `SELECT id, firstname, lastname, username, phone, city, email, address, score, buy, role, token FROM Users`
+      `SELECT id, firstname, lastname, username, phone, city, email, address, score, buy, role, token FROM users`
     );
     res.status(200).json(users);
   } catch (err) {
@@ -84,11 +83,11 @@ usersRouter.get("/", async (req, res) => {
 usersRouter.delete("/:userID", authenticateToken, async (req, res) => {
   try {
     const userID = req.params.userID;
-    const [result] = await pool.query("DELETE FROM Users WHERE id = ?", [userID]);
+    const [result] = await pool.query("DELETE FROM users WHERE id = ?", [userID]);
     if (result.affectedRows === 0)
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "user not found" });
 
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({ message: "user deleted successfully" });
   } catch (err) {
     console.error("DB error:", err);
     res.status(500).json({ message: "Database error", details: err.message });
@@ -102,7 +101,7 @@ usersRouter.put("/:userID", authenticateToken, async (req, res) => {
     const { firstname, lastname, username, password, phone, city, email, address, score, buy, role } = req.body;
 
     if (username && username.trim() === "")
-      return res.status(400).json({ message: "Username cannot be empty" });
+      return res.status(400).json({ message: "username cannot be empty" });
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return res.status(400).json({ message: "Invalid email format" });
     if (role && !["admin", "user"].includes(role.trim()))
@@ -111,7 +110,7 @@ usersRouter.put("/:userID", authenticateToken, async (req, res) => {
     const hashedPassword = password ? await bcrypt.hash(password.trim(), 10) : null;
 
     const [result] = await pool.query(
-      `UPDATE Users 
+      `UPDATE users 
        SET firstname = ?, lastname = ?, username = ?, password = ?, phone = ?, city = ?, email = ?, address = ?, score = ?, buy = ?, role = ?
        WHERE id = ?`,
       [
@@ -131,9 +130,9 @@ usersRouter.put("/:userID", authenticateToken, async (req, res) => {
     );
 
     if (result.affectedRows === 0)
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "user not found" });
 
-    res.status(200).json({ message: "User updated successfully" });
+    res.status(200).json({ message: "user updated successfully" });
   } catch (err) {
     console.error("DB error:", err);
     res.status(500).json({ message: "Database error", details: err.message });
@@ -171,16 +170,16 @@ usersRouter.patch("/:userID", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "No valid fields provided" });
     }
 
-    const sql = `UPDATE Users SET ${updates.join(", ")} WHERE id = ?`;
+    const sql = `UPDATE users SET ${updates.join(", ")} WHERE id = ?`;
     values.push(userID);
 
     const [result] = await pool.query(sql, values);
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "user not found" });
     }
 
-    res.status(200).json({ message: "User updated successfully" });
+    res.status(200).json({ message: "user updated successfully" });
   } catch (err) {
     console.error("DB error:", err);
     res.status(500).json({ message: "Database error", details: err.message });
@@ -202,14 +201,14 @@ usersRouter.put("/:userID/password", authenticateToken, async (req, res) => {
       return res.status(400).json({ error: "New password must be at least 6 characters" });
     }
 
-    const [userRows] = await pool.query("SELECT id, password, username, role FROM Users WHERE id = ?", [targetUserID]);
+    const [userRows] = await pool.query("SELECT id, password, username, role FROM users WHERE id = ?", [targetUserID]);
     if (!userRows.length) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "user not found" });
     }
     const targetUser = userRows[0];
 
     if (requester.role === "user" && requester.id !== targetUserID) {
-      return res.status(403).json({ error: "Users can only change their own password" });
+      return res.status(403).json({ error: "users can only change their own password" });
     }
 
     if (requester.role === "admin" && targetUser.role === "admin" && requester.id !== targetUserID) {
@@ -227,7 +226,7 @@ usersRouter.put("/:userID/password", authenticateToken, async (req, res) => {
     }
 
     const hashed = await bcrypt.hash(newPassword, 10);
-    const [result] = await pool.query("UPDATE Users SET password = ? WHERE id = ?", [hashed, targetUserID]);
+    const [result] = await pool.query("UPDATE users SET password = ? WHERE id = ?", [hashed, targetUserID]);
 
     if (result.affectedRows === 0) {
       return res.status(500).json({ error: "Password update failed" });
@@ -244,10 +243,10 @@ usersRouter.put("/:userID/password", authenticateToken, async (req, res) => {
 // 📌 User login
 usersRouter.post("/login", async (req, res) => {
   const { username, password } = req.body;
-  if (!username || !password) return res.status(400).json({ message: "Username and password required" });
+  if (!username || !password) return res.status(400).json({ message: "username and password required" });
 
   try {
-    const [rows] = await pool.query("SELECT * FROM Users WHERE username = ?", [username]);
+    const [rows] = await pool.query("SELECT * FROM users WHERE username = ?", [username]);
     if (!rows.length) return res.status(401).json({ message: "Incorrect username or password" });
 
     const user = rows[0];
@@ -255,7 +254,7 @@ usersRouter.post("/login", async (req, res) => {
     if (!match) return res.status(401).json({ message: "Incorrect username or password" });
 
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "30d" });
-    await pool.query("UPDATE Users SET token = ? WHERE id = ?", [token, user.id]);
+    await pool.query("UPDATE users SET token = ? WHERE id = ?", [token, user.id]);
 
     res.status(200).json({ user, token });
 

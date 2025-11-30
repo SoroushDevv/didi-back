@@ -25,7 +25,7 @@ addressesRouter.get("/", authenticateToken, async (req, res) => {
     const userID = req.user.id;
     const [result] = await pool.query(
       `SELECT id, user_id AS userID, province, address, city, postal_code AS postalCode, address_type AS addressType, created_at AS createdAt
-       FROM Addresses WHERE user_id = ?`,
+       FROM addresses WHERE user_id = ?`,
       [userID]
     );
     res.status(200).json(result);
@@ -47,12 +47,12 @@ addressesRouter.post("/", authenticateToken, async (req, res) => {
 
     const userID = req.user.id;
     const [result] = await pool.query(
-      `INSERT INTO Addresses (user_id, province, address, city, postal_code, address_type)
+      `INSERT INTO addresses (user_id, province, address, city, postal_code, address_type)
        VALUES (?, ?, ?, ?, ?, ?)`,
       [userID, province.trim(), address.trim(), city.trim(), postalCode, addressType]
     );
 
-    res.status(201).json({ message: "Address added successfully", addressID: result.insertId });
+    res.status(201).json({ message: "address added successfully", addressID: result.insertId });
   } catch (err) {
     res.status(500).json({ message: "Database error", details: err.message });
   }
@@ -72,13 +72,13 @@ addressesRouter.put("/:addressID", authenticateToken, async (req, res) => {
 
     const userID = req.user.id;
     const [result] = await pool.query(
-      `UPDATE Addresses SET province = ?, address = ?, city = ?, postal_code = ?, address_type = ? WHERE id = ? AND user_id = ?`,
+      `UPDATE addresses SET province = ?, address = ?, city = ?, postal_code = ?, address_type = ? WHERE id = ? AND user_id = ?`,
       [province.trim(), address.trim(), city.trim(), postalCode, addressType, addressID, userID]
     );
 
-    if (result.affectedRows === 0) return res.status(404).json({ message: "Address not found or not yours" });
+    if (result.affectedRows === 0) return res.status(404).json({ message: "address not found or not yours" });
 
-    res.status(200).json({ message: "Address updated successfully" });
+    res.status(200).json({ message: "address updated successfully" });
   } catch (err) {
     res.status(500).json({ message: "Database error", details: err.message });
   }
@@ -92,13 +92,13 @@ addressesRouter.delete("/:addressID", authenticateToken, async (req, res) => {
 
     const userID = req.user.id;
     const [result] = await pool.query(
-      `DELETE FROM Addresses WHERE id = ? AND user_id = ?`,
+      `DELETE FROM addresses WHERE id = ? AND user_id = ?`,
       [addressID, userID]
     );
 
-    if (result.affectedRows === 0) return res.status(404).json({ message: "Address not found or not yours" });
+    if (result.affectedRows === 0) return res.status(404).json({ message: "address not found or not yours" });
 
-    res.status(200).json({ message: "Address deleted successfully" });
+    res.status(200).json({ message: "address deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: "Database error", details: err.message });
   }

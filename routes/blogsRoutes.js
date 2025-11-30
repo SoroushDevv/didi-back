@@ -9,7 +9,7 @@ blogsRouter.get("/", async (req, res) => {
     const selectAllBlogsQuery = `
       SELECT 
         id, title, slug, category, excerpt, content, cover_image, authorID, related_productID, status, views_count, likes_count, seo_title, seo_description, created_at, published_at
-      FROM Blogs
+      FROM blogs
       ORDER BY created_at DESC
     `;
     const [result] = await pool.query(selectAllBlogsQuery);
@@ -27,7 +27,7 @@ blogsRouter.get("/:blogID", async (req, res) => {
     const blogID = parseInt(req.params.blogID);
     if (isNaN(blogID)) return res.status(400).json({ message: "Invalid blogID" });
 
-    const [result] = await pool.query("SELECT * FROM Blogs WHERE id = ?", [blogID]);
+    const [result] = await pool.query("SELECT * FROM blogs WHERE id = ?", [blogID]);
     if (result.length === 0) return res.status(404).json({ message: "Blog not found" });
 
     res.status(200).json(result[0]);
@@ -47,7 +47,7 @@ blogsRouter.post("/", async (req, res) => {
     }
 
     const insertQuery = `
-      INSERT INTO Blogs 
+      INSERT INTO blogs 
       (title, slug, category, excerpt, content, cover_image, authorID, related_productID, status, seo_title, seo_description, published_at) 
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
@@ -71,7 +71,7 @@ blogsRouter.put("/:blogID", async (req, res) => {
     const { title, slug, category, excerpt, content, cover_image, authorID, related_productID, status, seo_title, seo_description, published_at } = req.body;
 
     const updateQuery = `
-      UPDATE Blogs SET 
+      UPDATE blogs SET 
         title=?, slug=?, category=?, excerpt=?, content=?, cover_image=?, authorID=?, related_productID=?, status=?, seo_title=?, seo_description=?, published_at=?
       WHERE id=?
     `;
@@ -94,7 +94,7 @@ blogsRouter.delete("/:blogID", async (req, res) => {
     const blogID = parseInt(req.params.blogID);
     if (isNaN(blogID)) return res.status(400).json({ message: "Invalid blogID" });
 
-    const [result] = await pool.query("DELETE FROM Blogs WHERE id = ?", [blogID]);
+    const [result] = await pool.query("DELETE FROM blogs WHERE id = ?", [blogID]);
     if (result.affectedRows === 0) return res.status(404).json({ message: "Blog not found" });
 
     res.status(200).json({ message: "Blog deleted successfully" });

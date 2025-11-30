@@ -15,7 +15,7 @@ bankCardsRouter.get("/", async (req, res) => {
         c.created_at,
         u.id AS user_id,
         u.username
-      FROM Card_details c
+      FROM card_details c
       INNER JOIN Users u ON u.id = c.user_id
     `;
     const [result] = await pool.query(sql);
@@ -40,7 +40,7 @@ bankCardsRouter.get("/user/:userID", async (req, res) => {
         bank_logo,
         status,
         created_at
-      FROM Card_details 
+      FROM card_details 
       WHERE user_id = ?
     `;
     const [result] = await pool.query(sql, [userID]);
@@ -100,7 +100,7 @@ bankCardsRouter.post("/", async (req, res) => {
     const bankInfo = bankBins[bin] || { name: "بانک نامشخص", logo: "default" };
 
     const sql = `
-      INSERT INTO Card_details (user_id, card_number, bank_name, bank_logo, status)
+      INSERT INTO card_details (user_id, card_number, bank_name, bank_logo, status)
       VALUES (?, ?, ?, ?, ?)
     `;
     const [result] = await pool.query(sql, [
@@ -128,7 +128,7 @@ bankCardsRouter.delete("/:cardID", async (req, res) => {
     const cardID = parseInt(req.params.cardID);
     if (isNaN(cardID)) return res.status(400).json({ message: "Invalid cardID" });
 
-    const sql = "DELETE FROM Card_details WHERE id = ?";
+    const sql = "DELETE FROM card_details WHERE id = ?";
     const [result] = await pool.query(sql, [cardID]);
 
     if (result.affectedRows === 0) return res.status(404).json({ message: "Bank card not found" });
@@ -148,7 +148,7 @@ bankCardsRouter.put("/status/:cardID/:status", async (req, res) => {
 
     if (isNaN(cardID)) return res.status(400).json({ message: "Invalid cardID" });
 
-    const sql = "UPDATE Card_details SET status = ? WHERE id = ?";
+    const sql = "UPDATE card_details SET status = ? WHERE id = ?";
     const [result] = await pool.query(sql, [status, cardID]);
 
     if (result.affectedRows === 0) return res.status(404).json({ message: "Bank card not found" });

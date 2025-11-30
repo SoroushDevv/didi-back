@@ -8,7 +8,7 @@ categoriesRouter.get("/", async (req, res) => {
   try {
     const query = `
       SELECT id, title, parent_id
-      FROM Categories
+      FROM categories
     `;
     const [result] = await pool.query(query);
 
@@ -35,7 +35,7 @@ categoriesRouter.delete("/:categoryID", async (req, res) => {
     if (isNaN(categoryID)) return res.status(400).json({ message: "Invalid categoryID" });
 
     const [result] = await pool.query(
-      "DELETE FROM Categories WHERE id = ?",
+      "DELETE FROM categories WHERE id = ?",
       [categoryID]
     );
 
@@ -61,7 +61,7 @@ categoriesRouter.put("/active-category/:categoryID/:isActive", async (req, res) 
     if (isNaN(categoryID)) return res.status(400).json({ message: "Invalid categoryID" });
 
     const [result] = await pool.query(
-      "UPDATE Categories SET isActive = ? WHERE id = ?",
+      "UPDATE categories SET isActive = ? WHERE id = ?",
       [isActive, categoryID]
     );
 

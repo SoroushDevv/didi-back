@@ -10,7 +10,7 @@ async function fetchCommentByID(commentID) {
        c.id, c.body, c.created_at, c.is_reply, c.reply_id, c.status, 
        u.id AS userID, u.username AS userName, u.role AS userRole, 
        p.id AS productID, p.title AS productTitle
-     FROM Comments c
+     FROM comments c
      INNER JOIN Users u ON u.id = c.userID
      INNER JOIN Products p ON p.id = c.productID
      WHERE c.id = ?`,
@@ -28,7 +28,7 @@ commentsRouter.get("/", async (req, res) => {
         c.id, c.body, c.created_at, c.is_reply, c.reply_id, c.status, 
         u.id AS userID, u.username AS userName, u.role AS userRole, 
         p.id AS productID, p.title AS productTitle
-      FROM Comments c
+      FROM comments c
       INNER JOIN Users u ON u.id = c.userID 
       INNER JOIN Products p ON p.id = c.productID
       WHERE c.status = 'approved'
@@ -62,7 +62,7 @@ commentsRouter.post("/", async (req, res) => {
       return res.status(400).json({ message: "شناسه پاسخ نامعتبر است" });
 
     const [result] = await pool.query(
-      `INSERT INTO Comments (body, userID, productID, is_reply, reply_id, status) VALUES (?, ?, ?, ?, ?, 'pending')`,
+      `INSERT INTO comments (body, userID, productID, is_reply, reply_id, status) VALUES (?, ?, ?, ?, ?, 'pending')`,
       [body.trim(), userID, productID, is_reply, reply_id || null]
     );
 
@@ -84,7 +84,7 @@ commentsRouter.put("/:commentID", async (req, res) => {
       return res.status(400).json({ message: "متن نظر نامعتبر است" });
 
     const [result] = await pool.query(
-      "UPDATE Comments SET body = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      "UPDATE comments SET body = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
       [body.trim(), commentID]
     );
 
@@ -103,7 +103,7 @@ commentsRouter.delete("/:commentID", async (req, res) => {
     const commentID = parseInt(req.params.commentID);
     if (isNaN(commentID)) return res.status(400).json({ message: "شناسه نظر نامعتبر است" });
 
-    const [result] = await pool.query("DELETE FROM Comments WHERE id = ?", [commentID]);
+    const [result] = await pool.query("DELETE FROM comments WHERE id = ?", [commentID]);
     if (result.affectedRows === 0) return res.status(404).json({ message: "نظر یافت نشد" });
 
     res.status(200).json({ message: "نظر حذف شد" });
@@ -119,7 +119,7 @@ commentsRouter.post("/accept/:commentID", async (req, res) => {
     if (isNaN(commentID)) return res.status(400).json({ message: "شناسه نظر نامعتبر است" });
 
     const [result] = await pool.query(
-      "UPDATE Comments SET status = 'approved' WHERE id = ?",
+      "UPDATE comments SET status = 'approved' WHERE id = ?",
       [commentID]
     );
     if (result.affectedRows === 0) return res.status(404).json({ message: "نظر یافت نشد" });
@@ -138,7 +138,7 @@ commentsRouter.post("/reject/:commentID", async (req, res) => {
     if (isNaN(commentID)) return res.status(400).json({ message: "شناسه نظر نامعتبر است" });
 
     const [result] = await pool.query(
-      "UPDATE Comments SET status = 'rejected' WHERE id = ?",
+      "UPDATE comments SET status = 'rejected' WHERE id = ?",
       [commentID]
     );
     if (result.affectedRows === 0) return res.status(404).json({ message: "نظر یافت نشد" });

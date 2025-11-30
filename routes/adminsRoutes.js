@@ -8,14 +8,14 @@ adminsRouter.get("/", async (req, res) => {
   try {
     const adminToken = req.headers.authorization;
     if (!adminToken) {
-      return res.status(400).json({ message: "Admin token required" });
+      return res.status(400).json({ message: "admin token required" });
     }
 
-    const selectMainAdminQuery = `SELECT * FROM Admins WHERE token = ?`;
+    const selectMainAdminQuery = `SELECT * FROM admins WHERE token = ?`;
     const [result] = await pool.query(selectMainAdminQuery, [adminToken]);
 
     if (!result.length) {
-      return res.status(404).json({ message: "Admin not found" });
+      return res.status(404).json({ message: "admin not found" });
     }
 
     res.status(200).json(result[0]);

@@ -6,7 +6,7 @@ const offsRouter = express.Router();
 // دریافت تمام تخفیف‌ها
 offsRouter.get("/", async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT id, code, date, endDate, isActive, percent, adminID FROM Offs");
+    const [result] = await pool.query("SELECT id, code, date, endDate, isActive, percent, adminID FROM offs");
 
     const formattedResult = result.map((off) => ({
       id: Number(off.id),
@@ -30,7 +30,7 @@ offsRouter.delete("/:offID", async (req, res) => {
     const offID = parseInt(req.params.offID);
     if (isNaN(offID)) return res.status(400).json({ message: "Invalid offID" });
 
-    const [result] = await pool.query("DELETE FROM Offs WHERE id = ?", [offID]);
+    const [result] = await pool.query("DELETE FROM offs WHERE id = ?", [offID]);
     if (result.affectedRows === 0) return res.status(404).json({ message: "Off not found" });
 
     res.status(200).json({ message: "Off deleted successfully" });
@@ -47,7 +47,7 @@ offsRouter.put("/active-off/:offID/:isActive", async (req, res) => {
 
     if (isNaN(offID)) return res.status(400).json({ message: "Invalid offID" });
 
-    const [result] = await pool.query("UPDATE Offs SET isActive = ? WHERE id = ?", [isActive, offID]);
+    const [result] = await pool.query("UPDATE offs SET isActive = ? WHERE id = ?", [isActive, offID]);
     if (result.affectedRows === 0) return res.status(404).json({ message: "Off not found" });
 
     res.status(200).json({ message: "Off status updated successfully" });

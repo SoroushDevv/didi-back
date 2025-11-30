@@ -3,13 +3,13 @@ const pool = require("../db/DidikalaDB");
 
 const productsRouter = express.Router();
 
-// GET all Products
+// GET all products
 productsRouter.get("/", async (req, res) => {
   try {
-    const [products] = await pool.query("SELECT * FROM Products");
+    const [products] = await pool.query("SELECT * FROM products");
     res.status(200).json(products);
   } catch (err) {
-    console.error("Error fetching Products:", err);
+    console.error("Error fetching products:", err);
     res.status(500).json({ error: "خطا در دریافت محصولات" });
   }
 });
@@ -40,7 +40,7 @@ productsRouter.post("/", async (req, res) => {
 
   try {
     const [result] = await pool.query(
-      `INSERT INTO Products
+      `INSERT INTO products
        (title, price, count, img, popularity, sale, hasDiscount,
         discountEndDate, discountPercent, colors, productDesc, url, categoryID)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -63,7 +63,7 @@ productsRouter.post("/", async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Product added successfully", productID: result.insertId });
+      .json({ message: "product added successfully", productID: result.insertId });
   } catch (err) {
     console.error("Error adding product:", err);
     res.status(500).json({ error: "خطا در افزودن محصول" });
@@ -95,7 +95,7 @@ productsRouter.put("/:productID", async (req, res) => {
 
   try {
     const [result] = await pool.query(
-      `UPDATE Products
+      `UPDATE products
        SET title = ?, price = ?, count = ?, img = ?, popularity = ?, sale = ?,
            hasDiscount = ?, discountEndDate = ?, discountPercent = ?,
            colors = ?, productDesc = ?, url = ?, categoryID = ?
@@ -121,7 +121,7 @@ productsRouter.put("/:productID", async (req, res) => {
     if (result.affectedRows === 0)
       return res.status(404).json({ error: "محصول یافت نشد" });
 
-    res.status(200).json({ message: "Product updated successfully" });
+    res.status(200).json({ message: "product updated successfully" });
   } catch (err) {
     console.error("Error updating product:", err);
     res.status(500).json({ error: "خطا در ویرایش محصول" });
@@ -135,11 +135,11 @@ productsRouter.delete("/:productID", async (req, res) => {
     return res.status(400).json({ error: "productID نامعتبر است" });
 
   try {
-    const [result] = await pool.query("DELETE FROM Products WHERE id = ?", [productID]);
+    const [result] = await pool.query("DELETE FROM products WHERE id = ?", [productID]);
     if (result.affectedRows === 0)
       return res.status(404).json({ error: "محصول یافت نشد" });
 
-    res.status(200).json({ message: "Product deleted successfully" });
+    res.status(200).json({ message: "product deleted successfully" });
   } catch (err) {
     console.error("Error deleting product:", err);
     res.status(500).json({ error: "خطا در حذف محصول" });
