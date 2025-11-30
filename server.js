@@ -48,7 +48,7 @@ app.set("io", io);
 
 // Middlewares
 app.use(cors({
-  origin: "https://devserver-main--shimmering-pastelito-2da423.netlify.app",
+  origin: "https://didikalashop-frontend.vercel.app/",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
