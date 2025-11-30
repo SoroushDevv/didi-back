@@ -25,11 +25,13 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://devserver-main--shimmering-pastelito-2da423.netlify.app', 
-       "http://localhost:3000",
+      'https://devserver-main--shimmering-pastelito-2da423.netlify.app',
+      "http://localhost:3000",
       "http://localhost:8000",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    credentials: true,
+
   },
 });
 

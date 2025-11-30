@@ -1,23 +1,17 @@
 {
   "name": "Didi Kala Shop Cms",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Backend for Didi Kala Shop",
+  "main": "server/server.js",
   "scripts": {
-    "start": "react-scripts start",
-    "server": "node server/server.js",
-    "dev": "concurrently \"npm run server\" \"npm start\"",
-    "lint": "eslint src --ext .js,.jsx",
-    "test": "react-scripts test",
-    "format": "prettier --write \"src/**/*.{js,jsx,json,css,scss,md}\""
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js",
+    "lint": "eslint server --ext .js,.jsx",
+    "format": "prettier --write \"server/**/*.{js,json}\""
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/material": "^7.3.2",
     "bcryptjs": "^3.0.2",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
@@ -27,7 +21,11 @@
     "multer": "^2.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.15.3",
-    "react-scripts": "^5.0.1",
     "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "eslint": "^8.47.0",
+    "prettier": "^3.0.0"
   }
 }
