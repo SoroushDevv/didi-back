@@ -25,7 +25,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      'https://devserver-main--shimmering-pastelito-2da423.netlify.app',
+      'https://didikalashop-frontend.vercel.app/',
       "http://localhost:3000",
       "http://localhost:8000",
     ],
