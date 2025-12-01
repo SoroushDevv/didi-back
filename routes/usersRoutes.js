@@ -6,7 +6,6 @@ require("dotenv").config();
 
 const usersRouter = express.Router();
 
-// 📌 JWT authentication middleware
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
@@ -66,7 +65,6 @@ usersRouter.post("/register", async (req, res) => {
   }
 });
 
-// 📌 Get all users
 usersRouter.get("/", async (req, res) => {
   try {
     const [users] = await pool.query(
@@ -79,7 +77,6 @@ usersRouter.get("/", async (req, res) => {
   }
 });
 
-// 📌 Delete user
 usersRouter.delete("/:userID", authenticateToken, async (req, res) => {
   try {
     const userID = req.params.userID;
@@ -94,7 +91,6 @@ usersRouter.delete("/:userID", authenticateToken, async (req, res) => {
   }
 });
 
-// 📌 Update user
 usersRouter.put("/:userID", authenticateToken, async (req, res) => {
   try {
     const userID = req.params.userID;
@@ -139,7 +135,6 @@ usersRouter.put("/:userID", authenticateToken, async (req, res) => {
   }
 });
 
-// 📌 Partial user update (PATCH)
 usersRouter.patch("/:userID", authenticateToken, async (req, res) => {
   try {
     const userID = req.params.userID;
@@ -186,7 +181,6 @@ usersRouter.patch("/:userID", authenticateToken, async (req, res) => {
   }
 });
 
-// 📌 Change user password
 usersRouter.put("/:userID/password", authenticateToken, async (req, res) => {
   try {
     const requester = req.user;
@@ -240,7 +234,6 @@ usersRouter.put("/:userID/password", authenticateToken, async (req, res) => {
   }
 });
 
-// 📌 User login
 usersRouter.post("/login", async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) return res.status(400).json({ message: "username and password required" });
