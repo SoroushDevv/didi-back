@@ -172,7 +172,7 @@ ordersRouter.get("/user/:userID", authenticateToken, async (req, res) => {
             [userID]
         );
 
-        consolw.log("orders:",orders)
+        console.log("orders:",orders)
 
         const ordersMap = {};
         orders.forEach(row => {
