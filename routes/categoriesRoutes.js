@@ -3,7 +3,6 @@ const pool = require("./../db/DidikalaDB");
 
 const categoriesRouter = express.Router();
 
-// GET: دریافت تمام دسته‌بندی‌ها
 categoriesRouter.get("/", async (req, res) => {
   try {
     const query = `
@@ -28,7 +27,6 @@ categoriesRouter.get("/", async (req, res) => {
   }
 });
 
-// DELETE: حذف یک دسته‌بندی
 categoriesRouter.delete("/:categoryID", async (req, res) => {
   try {
     const categoryID = parseInt(req.params.categoryID);
@@ -52,7 +50,6 @@ categoriesRouter.delete("/:categoryID", async (req, res) => {
   }
 });
 
-// PUT: فعال/غیرفعال کردن دسته‌بندی
 categoriesRouter.put("/active-category/:categoryID/:isActive", async (req, res) => {
   try {
     const categoryID = parseInt(req.params.categoryID);

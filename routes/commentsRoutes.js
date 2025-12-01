@@ -11,26 +11,25 @@ async function fetchCommentByID(commentID) {
        u.id AS userID, u.username AS userName, u.role AS userRole, 
        p.id AS productID, p.title AS productTitle
      FROM comments c
-     INNER JOIN Users u ON u.id = c.userID
-     INNER JOIN Products p ON p.id = c.productID
+     INNER JOIN users u ON u.id = c.userID
+     INNER JOIN products p ON p.id = c.productID
      WHERE c.id = ?`,
     [commentID]
   );
   return result[0];
 }
 
-// GET: دریافت همه نظرات تأییدشده
 commentsRouter.get("/", async (req, res) => {
   try {
     const { productID } = req.query;
-    let sql = `
-      SELECT 
+    let sql = 
+    `SELECT 
         c.id, c.body, c.created_at, c.is_reply, c.reply_id, c.status, 
         u.id AS userID, u.username AS userName, u.role AS userRole, 
         p.id AS productID, p.title AS productTitle
       FROM comments c
-      INNER JOIN Users u ON u.id = c.userID 
-      INNER JOIN Products p ON p.id = c.productID
+      INNER JOIN users u ON u.id = c.userID 
+      INNER JOIN products p ON p.id = c.productID
       WHERE c.status = 'approved'
     `;
     const params = [];
@@ -49,7 +48,6 @@ commentsRouter.get("/", async (req, res) => {
   }
 });
 
-// POST: افزودن نظر جدید
 commentsRouter.post("/", async (req, res) => {
   try {
     const { body, userID, productID, is_reply = 0, reply_id = null } = req.body;
@@ -73,7 +71,6 @@ commentsRouter.post("/", async (req, res) => {
   }
 });
 
-// PUT: ویرایش نظر
 commentsRouter.put("/:commentID", async (req, res) => {
   try {
     const commentID = parseInt(req.params.commentID);
@@ -97,7 +94,6 @@ commentsRouter.put("/:commentID", async (req, res) => {
   }
 });
 
-// DELETE: حذف نظر
 commentsRouter.delete("/:commentID", async (req, res) => {
   try {
     const commentID = parseInt(req.params.commentID);
@@ -112,7 +108,6 @@ commentsRouter.delete("/:commentID", async (req, res) => {
   }
 });
 
-// POST: تأیید نظر
 commentsRouter.post("/accept/:commentID", async (req, res) => {
   try {
     const commentID = parseInt(req.params.commentID);
@@ -131,7 +126,6 @@ commentsRouter.post("/accept/:commentID", async (req, res) => {
   }
 });
 
-// POST: رد نظر
 commentsRouter.post("/reject/:commentID", async (req, res) => {
   try {
     const commentID = parseInt(req.params.commentID);

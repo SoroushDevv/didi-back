@@ -58,7 +58,6 @@ addressesRouter.post("/", authenticateToken, async (req, res) => {
   }
 });
 
-// PUT: ویرایش آدرس
 addressesRouter.put("/:addressID", authenticateToken, async (req, res) => {
   try {
     const addressID = parseInt(req.params.addressID);
@@ -84,7 +83,6 @@ addressesRouter.put("/:addressID", authenticateToken, async (req, res) => {
   }
 });
 
-// DELETE: حذف آدرس
 addressesRouter.delete("/:addressID", authenticateToken, async (req, res) => {
   try {
     const addressID = parseInt(req.params.addressID);

@@ -3,7 +3,6 @@ const pool = require("../db/DidikalaDB");
 
 const productsRouter = express.Router();
 
-// GET all products
 productsRouter.get("/", async (req, res) => {
   try {
     const [products] = await pool.query("SELECT * FROM products");
@@ -14,7 +13,6 @@ productsRouter.get("/", async (req, res) => {
   }
 });
 
-// POST add new product
 productsRouter.post("/", async (req, res) => {
   const {
     title,
@@ -70,7 +68,6 @@ productsRouter.post("/", async (req, res) => {
   }
 });
 
-// PUT update product
 productsRouter.put("/:productID", async (req, res) => {
   const productID = req.params.productID;
   const {
@@ -128,7 +125,6 @@ productsRouter.put("/:productID", async (req, res) => {
   }
 });
 
-// DELETE product
 productsRouter.delete("/:productID", async (req, res) => {
   const productID = req.params.productID;
   if (!/^\d+$/.test(productID))

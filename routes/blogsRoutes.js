@@ -3,7 +3,6 @@ const pool = require("./../db/DidikalaDB");
 
 const blogsRouter = express.Router();
 
-// GET: دریافت تمام بلاگ‌ها
 blogsRouter.get("/", async (req, res) => {
   try {
     const selectAllBlogsQuery = `
@@ -21,7 +20,6 @@ blogsRouter.get("/", async (req, res) => {
   }
 });
 
-// GET: دریافت یک بلاگ خاص
 blogsRouter.get("/:blogID", async (req, res) => {
   try {
     const blogID = parseInt(req.params.blogID);
@@ -37,7 +35,6 @@ blogsRouter.get("/:blogID", async (req, res) => {
   }
 });
 
-// POST: ایجاد بلاگ جدید
 blogsRouter.post("/", async (req, res) => {
   try {
     const { title, slug, category, excerpt, content, cover_image, authorID, related_productID, status, seo_title, seo_description, published_at } = req.body;
@@ -62,7 +59,6 @@ blogsRouter.post("/", async (req, res) => {
   }
 });
 
-// PUT: ویرایش بلاگ
 blogsRouter.put("/:blogID", async (req, res) => {
   try {
     const blogID = parseInt(req.params.blogID);
@@ -88,7 +84,6 @@ blogsRouter.put("/:blogID", async (req, res) => {
   }
 });
 
-// DELETE: حذف بلاگ
 blogsRouter.delete("/:blogID", async (req, res) => {
   try {
     const blogID = parseInt(req.params.blogID);

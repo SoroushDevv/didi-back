@@ -16,7 +16,7 @@ bankCardsRouter.get("/", async (req, res) => {
         u.id AS user_id,
         u.username
       FROM card_details c
-      INNER JOIN Users u ON u.id = c.user_id
+      INNER JOIN users u ON u.id = c.user_id
     `;
     const [result] = await pool.query(sql);
     res.status(200).json(result);
@@ -26,7 +26,6 @@ bankCardsRouter.get("/", async (req, res) => {
   }
 });
 
-// 📌 دریافت کارت‌های یک کاربر
 bankCardsRouter.get("/user/:userID", async (req, res) => {
   try {
     const userID = parseInt(req.params.userID);
@@ -52,7 +51,6 @@ bankCardsRouter.get("/user/:userID", async (req, res) => {
   }
 });
 
-// 📌 افزودن کارت جدید
 bankCardsRouter.post("/", async (req, res) => {
   try {
     const { user_id, card_number } = req.body;
@@ -122,7 +120,6 @@ bankCardsRouter.post("/", async (req, res) => {
   }
 });
 
-// 📌 حذف کارت
 bankCardsRouter.delete("/:cardID", async (req, res) => {
   try {
     const cardID = parseInt(req.params.cardID);
@@ -140,7 +137,6 @@ bankCardsRouter.delete("/:cardID", async (req, res) => {
   }
 });
 
-// 📌 تغییر وضعیت فعال/غیرفعال
 bankCardsRouter.put("/status/:cardID/:status", async (req, res) => {
   try {
     const cardID = parseInt(req.params.cardID);

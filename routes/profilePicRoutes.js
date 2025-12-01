@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const pool = require("./../db/DidikalaDB");
 
-// Get all user profiles
 router.get("/", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM user_profiles");
@@ -12,7 +11,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Get a profile by user_id
 router.get("/:user_id", async (req, res) => {
   const { user_id } = req.params;
   try {
@@ -24,7 +22,6 @@ router.get("/:user_id", async (req, res) => {
   }
 });
 
-// Create a new profile
 router.post("/", async (req, res) => {
   const { user_id, profile_image } = req.body;
   try {
@@ -38,7 +35,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update a profile
 router.put("/:user_id", async (req, res) => {
   const { user_id } = req.params;
   const { profile_image } = req.body;
@@ -54,7 +50,6 @@ router.put("/:user_id", async (req, res) => {
   }
 });
 
-// Delete a profile
 router.delete("/:user_id", async (req, res) => {
   const { user_id } = req.params;
   try {

@@ -3,7 +3,6 @@ const pool = require("./../db/DidikalaDB");
 
 const adminsRouter = express.Router();
 
-// GET: دریافت اطلاعات ادمین با توکن
 adminsRouter.get("/", async (req, res) => {
   try {
     const adminToken = req.headers.authorization;

@@ -3,7 +3,6 @@ const pool = require("./../db/DidikalaDB");
 
 const offsRouter = express.Router();
 
-// دریافت تمام تخفیف‌ها
 offsRouter.get("/", async (req, res) => {
   try {
     const [result] = await pool.query("SELECT id, code, date, endDate, isActive, percent, adminID FROM offs");
@@ -24,7 +23,6 @@ offsRouter.get("/", async (req, res) => {
   }
 });
 
-// حذف تخفیف
 offsRouter.delete("/:offID", async (req, res) => {
   try {
     const offID = parseInt(req.params.offID);
@@ -39,7 +37,6 @@ offsRouter.delete("/:offID", async (req, res) => {
   }
 });
 
-// فعال/غیرفعال کردن تخفیف
 offsRouter.put("/active-off/:offID/:isActive", async (req, res) => {
   try {
     const offID = parseInt(req.params.offID);
