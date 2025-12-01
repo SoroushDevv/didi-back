@@ -126,8 +126,7 @@ ordersRouter.get("/", async (req, res) => {
         oi.price
             FROM orders o
             LEFT JOIN order_items oi ON o.id = oi.orderID
-            ORDER BY o.date DESC, o.hour DESC
-      `);
+            ORDER BY o.date DESC, o.hour DESC`);
 
         const ordersMap = {};
         orders.forEach(row => {
@@ -168,24 +167,12 @@ ordersRouter.get("/user/:userID", authenticateToken, async (req, res) => {
 
 
 
-        const [orders] = await pool.query(`
-    SELECT
-    o.id AS orderID,
-      o.orderCode,
-      o.userID,
-      o.date,
-      o.hour,
-      o.isActive,
-      oi.id AS orderItemID,
-        oi.productID,
-        oi.quantity,
-        oi.color,
-        oi.price
-            FROM orders o
-            LEFT JOIN order_items oi ON o.id = oi.orderID
-            WHERE o.userID = ?
-      ORDER BY o.date DESC, o.hour DESC
-        `, [userID]);
+        const [orders] = await pool.query(
+            "SELECT o.id AS orderID, o.orderCode, o.userID, o.date, o.hour, o.isActive, oi.id AS orderItemID, oi.productID, oi.quantity, oi.color, oi.price FROM orders o LEFT JOIN order_items oi ON o.id = oi.orderID WHERE o.userID = ? ORDER BY o.date DESC, o.hour DESC",
+            [userID]
+        );
+
+        consolw.log("orders:",orders)
 
         const ordersMap = {};
         orders.forEach(row => {
